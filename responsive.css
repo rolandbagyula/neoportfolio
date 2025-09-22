@@ -274,18 +274,18 @@ img {
     width: 85%;
     max-width: 320px;
     height: 100%;
-    background: rgba(26, 26, 26, 0.98);
+    background: rgba(15, 15, 20, 0.98);
     z-index: 1000;
-    padding: 20px;
+    padding: 30px 20px;
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.7);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     -webkit-overflow-scrolling: touch;
-    border-left: 1px solid rgba(0, 240, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(0, 240, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
 .mobile-menu.active {
@@ -335,26 +335,31 @@ img {
     color: #fff;
     text-decoration: none;
     font-size: 1.1rem;
-    padding: 12px 15px;
-    border-radius: 6px;
+    padding: 15px 20px;
+    border-radius: 8px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
+    margin: 8px 0;
+    border-left: 3px solid transparent;
 }
 
 .mobile-menu-nav a:hover,
 .mobile-menu-nav a:focus {
     color: #00f0ff;
     background: rgba(0, 240, 255, 0.1);
-    transform: translateX(5px);
+    transform: translateX(10px);
+    border-left-color: #00f0ff;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2);
 }
 
 /* Add staggered animation for menu items */
-.mobile-menu-nav li:nth-child(1) { transition-delay: 0.1s; }
-.mobile-menu-nav li:nth-child(2) { transition-delay: 0.15s; }
-.mobile-menu-nav li:nth-child(3) { transition-delay: 0.2s; }
-.mobile-menu-nav li:nth-child(4) { transition-delay: 0.25s; }
+.mobile-menu-nav li:nth-child(1) { transition-delay: 0.05s; }
+.mobile-menu-nav li:nth-child(2) { transition-delay: 0.1s; }
+.mobile-menu-nav li:nth-child(3) { transition-delay: 0.15s; }
+.mobile-menu-nav li:nth-child(4) { transition-delay: 0.2s; }
+.mobile-menu-nav li:nth-child(5) { transition-delay: 0.25s; }
 
 .mobile-menu-header {
     display: flex;
@@ -395,9 +400,10 @@ img {
 }
 
 .mobile-menu-nav li {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     opacity: 1;
     transform: translateX(0);
+    transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
