@@ -76,9 +76,9 @@ https://templatemo.com/tm-594-nexus-flow
         </div>
         <nav class="mobile-menu-nav">
             <ul>
-                <li><a href="#features">Funkciók</a></li>
-                <li><a href="#pricing">Árak</a></li>
-                <li><a href="#stats">Statisztikák</a></li>
+                <li><a href="#features">Munkáim</a></li>
+                <li><a href="#pricing">Rólam</a></li>
+                <li><a href="#stats">A csapat</a></li>
                 <li><a href="#contact">Kapcsolat</a></li>
             </ul>
         </nav>
@@ -203,71 +203,17 @@ https://templatemo.com/tm-594-nexus-flow
                         <textarea id="message" name="message" rows="5" placeholder="Írd ide az üzenetedet..." required></textarea>
                     </div>
                     
-                    <button type="submit" class="btn-primary btn-submit">Üzenet Küldése</button>
+                    <button type="submit" class="btn-primary btn-submit">
+                        <span class="button-text">Üzenet Küldése</span>
+                        <span class="button-loader" style="display:none;">Küldés...</span>
+                    </button>
+                </form>
+                <div id="formSuccess" class="form-success" style="display:none;">
+                    <p>Köszönjük az üzenetedet! Hamarosan válaszolunk.</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#">Adatvédelmi Szabályzat</a>
-                <span class="footer-separator">•</span>
-                <a href="#">Felhasználási Feltételek</a>
-                <span class="footer-separator">•</span>
-                <a href="#">Dokumentáció</a>
-                <span class="footer-separator">•</span>
-                <a href="#">Ügyfélszolgálat</a>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 NexusFlow Rendszerek. Minden jog fenntartva.</p>
-                <p class="footer-credit">Készítette a <a href="https://templatemo.com" target="_blank" rel="noopener nofollow">TemplateMo</a> segítségével</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="templatemo-nexus-scripts.js"></script>
-
-<!-- Contact Section -->
-<section class="contact fade-up" id="contact">
-    <div class="contact-container">
-        <div class="section-header">
-            <h2 class="section-title">Kapcsolatfelvétel</h2>
-            <p class="section-subtitle">Küldj üzenetet a neurális hálózaton keresztül</p>
-        </div>
-        
-        <div class="contact-form-wrapper">
-            <form id="contactForm" class="contact-form" novalidate>
-                <div class="form-group">
-                    <label for="name">Neurális Azonosító</label>
-                    <input type="text" id="name" name="name" placeholder="Add meg a megnevezésed" required 
-                           minlength="2" maxlength="50" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+">
-                    <div class="error-message" id="nameError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Kvantum Cím</label>
-                    <input type="email" id="email" name="email" placeholder="azonosito@pelda.hu" required>
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Üzenet</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Írd ide az üzenetedet..." 
-                             required minlength="10" maxlength="1000"></textarea>
-                    <div class="error-message" id="messageError"></div>
-                </div>
-                
-                <button type="submit" class="btn-primary btn-submit">
-                    <span class="button-text">Üzenet Küldése</span>
-                    <span class="button-loader" style="display:none;">Küldés...</span>
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
 
 <!-- Footer -->
 <footer class="footer">
@@ -318,11 +264,11 @@ https://templatemo.com/tm-594-nexus-flow
             // Update ARIA attributes
             menuButton.setAttribute('aria-expanded', isMenuOpen);
             
-            // Handle body scroll
             if (isMenuOpen) {
-                document.documentElement.style.overflow = 'hidden';
+                // Prevent body scroll when menu is open
                 document.body.style.overflow = 'hidden';
-                body.classList.add('menu-open');
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
                 
                 // Focus trap
                 menu.setAttribute('tabindex', '-1');
@@ -334,9 +280,10 @@ https://templatemo.com/tm-594-nexus-flow
                     item.style.transitionDelay = `${0.1 + (index * 0.05)}s`;
                 });
             } else {
-                document.documentElement.style.overflow = '';
+                // Re-enable scrolling
                 document.body.style.overflow = '';
-                body.classList.remove('menu-open');
+                document.body.style.position = '';
+                document.body.style.width = '';
                 menuButton.focus();
             }
             
@@ -350,7 +297,7 @@ https://templatemo.com/tm-594-nexus-flow
             }
         }
         
-        // Event listeners
+        // Add event listeners
         menuButton.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -359,21 +306,60 @@ https://templatemo.com/tm-594-nexus-flow
         
         closeButton.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             closeMenu();
         });
         
         overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) {
-                closeMenu();
-            }
+            e.preventDefault();
+            closeMenu();
         });
         
-        // Close when clicking outside menu
-        function handleOutsideClick(e) {
-            if (isMenuOpen && !menu.contains(e.target) && !menuButton.contains(e.target)) {
+        // Handle mobile menu navigation
+        const navLinks = document.querySelectorAll('.mobile-menu-nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                e.preventDefault();
+                
+                // Get target element before closing menu
+                const targetElement = document.querySelector(targetId);
+                if (!targetElement) return;
+                
+                // Close the menu first
                 closeMenu();
-            }
-        }
+                
+                // Reset body styles to enable scrolling
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
+                
+                // Small delay to ensure menu is fully closed
+                setTimeout(() => {
+                    // Calculate scroll position with header offset
+                    const headerHeight = document.querySelector('nav').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without page jump
+                    if (history.pushState) {
+                        history.pushState(null, null, targetId);
+                    } else {
+                        window.location.hash = targetId;
+                    }
+                }, 50); // Minimal delay
+                
+                return false;
+            });
+        });
         
         // Handle window resize
         function handleResize() {

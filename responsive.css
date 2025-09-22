@@ -7,6 +7,60 @@
     --header-height: 70px;
 }
 
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+/* Reset for when menu is closed */
+body.menu-closed {
+    position: static;
+    overflow: visible;
+    height: auto;
+}
+
+/* Mobile menu open state */
+@media (max-width: 991px) {
+    body.menu-open {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Contact section heading */
+    .section-title {
+        font-size: 2rem !important;
+        line-height: 1.2;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem !important;
+    }
+    
+    /* Contact section specific */
+    #contact .section-title {
+        font-size: 1.75rem !important;
+    }
+    
+    #contact .section-subtitle {
+        font-size: 0.95rem !important;
+    }
+}
+
 /* Base Typography */
 html {
     font-size: 16px;
@@ -43,6 +97,40 @@ img {
     align-items: center;
     height: var(--header-height);
     position: relative;
+}
+
+/* Feature Cards - Responsive */
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .feature-card {
+        padding: 1.5rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.2rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .feature-card p {
+        margin: 0.5rem 0 !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .feature-icon {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .highlight {
+        padding: 0.1rem 0.3rem !important;
+        margin: 0.2rem 0 !important;
+        display: inline-block !important;
+    }
 }
 
 /* Screen reader only text */
