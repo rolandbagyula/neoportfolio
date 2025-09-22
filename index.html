@@ -368,6 +368,18 @@ https://templatemo.com/tm-594-nexus-flow
             }
         }
         
+        // Handle clicks outside the menu to close it
+        function handleOutsideClick(e) {
+            if (isMenuOpen && !menu.contains(e.target) && !menuButton.contains(e.target)) {
+                closeMenu();
+            }
+        }
+
+        // Close menu when clicking on navigation links
+        document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
         // Add event listeners
         document.addEventListener('click', handleOutsideClick);
         window.addEventListener('resize', handleResize);
@@ -376,12 +388,10 @@ https://templatemo.com/tm-594-nexus-flow
         return () => {
             document.removeEventListener('click', handleOutsideClick);
             window.removeEventListener('resize', handleResize);
+            document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
+                link.removeEventListener('click', closeMenu);
+            });
         };
-        
-        // Close menu when clicking on navigation links
-        document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
         
         // Handle keyboard navigation
         document.addEventListener('keydown', function(e) {
