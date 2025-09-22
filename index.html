@@ -2,9 +2,17 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f051a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bagyula Roland</title>
     <link href="templatemo-nexus-style.css" rel="stylesheet">
+    <link href="responsive.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <!--
 
 TemplateMo 594 nexus flow
@@ -46,15 +54,11 @@ https://templatemo.com/tm-594-nexus-flow
                 <li><a href="#stats">A csapat</a></li>
                 <li><a href="#contact">Kapcsolat</a></li>
             </ul>
-            <div class="nav-bottom">
-                <a href="#" class="cyber-button">Projektek</a>
-            </div>
-            <button class="mobile-menu-button" id="mobileMenuBtn">
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+            <button class="mobile-menu-button" id="mobileMenuBtn" aria-label="Menü megnyitása" aria-expanded="false" aria-controls="mobileMenu" aria-haspopup="true">
+                <span class="hamburger" aria-hidden="true"></span>
+                <span class="hamburger" aria-hidden="true"></span>
+                <span class="hamburger" aria-hidden="true"></span>
+                <span class="sr-only">Menü</span>
             </button>
         </div>
     </nav>
@@ -224,5 +228,180 @@ https://templatemo.com/tm-594-nexus-flow
     </footer>
 
     <script src="templatemo-nexus-scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu elements
+            const menuButton = document.getElementById('mobileMenuBtn');
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            const closeButton = document.getElementById('mobileMenuClose');
+            
+            // Check if elements exist
+            if (!menuButton || !menu || !overlay || !closeButton) {
+                console.error('Menu elements not found');
+
+<!-- Contact Section -->
+<section class="contact fade-up" id="contact">
+    <div class="contact-container">
+        <div class="section-header">
+            <h2 class="section-title">Kapcsolatfelvétel</h2>
+            <p class="section-subtitle">Küldj üzenetet a neurális hálózaton keresztül</p>
+        </div>
+        
+        <div class="contact-form-wrapper">
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="name">Neurális Azonosító</label>
+                    <input type="text" id="name" name="name" placeholder="Add meg a megnevezésed" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Kvantum Cím</label>
+                    <input type="email" id="email" name="email" placeholder="azonosito@pelda.hu" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Üzenet</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Írd ide az üzenetedet..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-submit">Üzenet Küldése</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="#">Adatvédelmi Szabályzat</a>
+            <span class="footer-separator">•</span>
+            <a href="#">Felhasználási Feltételek</a>
+            <span class="footer-separator">•</span>
+            <a href="#">Dokumentáció</a>
+            <span class="footer-separator">•</span>
+            <a href="#">Ügyfélszolgálat</a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 NexusFlow Rendszerek. Minden jog fenntartva.</p>
+            <p class="footer-credit">Készítette a <a href="https://templatemo.com" target="_blank" rel="noopener nofollow">TemplateMo</a> segítségével</p>
+        </div>
+    </div>
+</footer>
+
+<script src="templatemo-nexus-scripts.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu elements
+        const menuButton = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('mobileMenuOverlay');
+        const closeButton = document.getElementById('mobileMenuClose');
+        
+        // Check if elements exist
+        if (!menuButton || !menu || !overlay || !closeButton) {
+            console.error('Menu elements not found');
+            return;
+        }
+
+        // Toggle menu function
+        function toggleMenu() {
+            const isOpen = !menu.classList.contains('active');
+            
+            // Toggle menu state
+            menu.classList.toggle('active', isOpen);
+            menuButton.classList.toggle('active', isOpen);
+            menuButton.setAttribute('aria-expanded', isOpen);
+            overlay.classList.toggle('active', isOpen);
+            
+            // Toggle body scroll
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+            
+            // Focus management
+            if (isOpen) {
+                menu.setAttribute('tabindex', '-1');
+                closeButton.focus();
+            } else {
+                menuButton.focus();
+            }
+            
+            // Dispatch custom event
+            const event = new CustomEvent('menuToggle', { 
+                detail: { isOpen } 
+            });
+            document.dispatchEvent(event);
+        }
+        
+        // Close menu function
+        function closeMenu() {
+            if (menu.classList.contains('active')) {
+                toggleMenu();
+            }
+        }
+
+        // Event delegation for better performance
+        document.addEventListener('click', function(e) {
+            // Toggle when clicking menu button
+            if (e.target.closest('#mobileMenuBtn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMenu();
+                return;
+            }
+            
+            // Close when clicking close button or overlay
+            if (e.target.closest('#mobileMenuClose') || 
+                e.target === overlay) {
+                e.preventDefault();
+                closeMenu();
+                return;
+            }
+            
+            // Close when clicking outside menu
+            if (menu.classList.contains('active') && 
+                !menu.contains(e.target) && 
+                !menuButton.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        // Close menu when clicking on navigation links
+        document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            // Close on Escape key
+            if (e.key === 'Escape' && menu.classList.contains('active')) {
+                e.preventDefault();
+                closeMenu();
+                return;
+            }
+            
+            // Trap focus inside menu when open
+            if (e.key === 'Tab' && menu.classList.contains('active')) {
+                const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+                const focusableContent = menu.querySelectorAll(focusableElements);
+                const firstFocusableElement = focusableContent[0];
+                const lastFocusableElement = focusableContent[focusableContent.length - 1];
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
