@@ -67,37 +67,72 @@ https://templatemo.com/tm-594-nexus-flow
                 document.body.style.overflow = '';
             }
 
-            // Toggle mobile menu
-            mobileMenuBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+            // Debounce function to prevent multiple rapid clicks
+            const debounce = (func, delay) => {
+                let timeoutId;
+                return function(...args) {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => {
+                        func.apply(this, args);
+                    }, delay);
+                };
+            };
+
+            // Toggle mobile menu with debounce
+            const handleMenuToggle = debounce((e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                // Toggle menu state
                 if (mobileMenu.classList.contains('active')) {
                     closeMobileMenu();
                 } else {
                     openMobileMenu();
                 }
-            });
+                
+                // Add a small delay before allowing another toggle
+                mobileMenuBtn.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    if (mobileMenuBtn) {
+                        mobileMenuBtn.style.pointerEvents = 'auto';
+                    }
+                }, 300);
+            }, 100);
 
-            // Close mobile menu
-            mobileMenuClose.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                closeMobileMenu();
-            });
-            
-            mobileMenuOverlay.addEventListener('click', (e) => {
-                e.stopPropagation();
-                closeMobileMenu();
-            });
-
-            // Close menu when clicking on navigation links
-            mobileMenuLinks.forEach(link => {
-                if (link) {
-                    link.addEventListener('click', () => {
-                        closeMobileMenu();
-                    });
+            // Close mobile menu with debounce
+            const handleCloseMenu = debounce((e) => {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
-            });
+                closeMobileMenu();
+            }, 100);
+
+            // Add event listeners
+            const addMenuListeners = () => {
+                // Remove existing event listeners first to prevent duplicates
+                mobileMenuBtn.removeEventListener('click', handleMenuToggle);
+                mobileMenuClose.removeEventListener('click', handleCloseMenu);
+                mobileMenuOverlay.removeEventListener('click', handleCloseMenu);
+
+                // Add new event listeners
+                mobileMenuBtn.addEventListener('click', handleMenuToggle);
+                mobileMenuClose.addEventListener('click', handleCloseMenu);
+                mobileMenuOverlay.addEventListener('click', handleCloseMenu);
+
+                // Close menu when clicking on navigation links
+                mobileMenuLinks.forEach(link => {
+                    if (link) {
+                        link.removeEventListener('click', handleCloseMenu);
+                        link.addEventListener('click', handleCloseMenu);
+                    }
+                });
+            };
+
+            // Initialize menu listeners
+            addMenuListeners();
 
             // Close menu when clicking on CTA button
             if (mobileMenuCtaButton) {
