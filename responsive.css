@@ -5,16 +5,24 @@
     --transition-speed: 0.3s;
     --container-padding: 1rem;
     --header-height: 70px;
+    --min-font: 14px;
+    --max-font: 16px;
+    --min-width: 320px;
+    --max-width: 1200px;
 }
 
-/* Smooth scrolling */
+/* Fluid typography */
 html {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     height: 100%;
     overflow-x: hidden;
     width: 100%;
-    font-size: 16px;
+    font-size: clamp(
+        var(--min-font), 
+        calc(var(--min-font) + (var(--max-font) - var(--min-font)) * ((100vw - var(--min-width)) / (var(--max-width) - var(--min-width)))), 
+        var(--max-font)
+    );
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
@@ -86,6 +94,18 @@ body.menu-closed {
     }
     
     /* Typography adjustments for mobile */
+    html {
+        font-size: 14px;
+    }
+    
+    h1 { font-size: 2rem !important; }
+    h2 { font-size: 1.75rem !important; }
+    h3 { font-size: 1.5rem !important; }
+    p, li, a { 
+        font-size: 1rem !important;
+        line-height: 1.6;
+    }
+    
     .section-title {
         font-size: 1.75rem !important;
         line-height: 1.2;
