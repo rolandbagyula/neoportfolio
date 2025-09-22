@@ -94,10 +94,25 @@ img {
 @media (max-width: 991px) {
     .mobile-menu-button {
         display: flex;
+        margin-left: auto; /* Push to the right */
     }
     
     .nav-links {
         display: none;
+    }
+    
+    /* Ensure proper spacing for mobile header */
+    .nav-container {
+        padding: 0 15px;
+    }
+    
+    /* Adjust logo size for mobile */
+    .logo {
+        font-size: 1.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60%;
     }
 }
 
@@ -256,16 +271,21 @@ img {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
+    width: 85%;
+    max-width: 320px;
     height: 100%;
-    background: #1a1a1a;
+    background: rgba(26, 26, 26, 0.98);
     z-index: 1000;
     padding: 20px;
-    transition: right 0.3s ease;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    -webkit-overflow-scrolling: touch;
+    border-left: 1px solid rgba(0, 240, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .mobile-menu.active {
@@ -299,19 +319,42 @@ img {
 }
 
 .mobile-menu-nav li {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.4s ease;
+}
+
+.mobile-menu.active .mobile-menu-nav li {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .mobile-menu-nav a {
+    display: block;
     color: #fff;
     text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s ease;
+    font-size: 1.1rem;
+    padding: 12px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
 }
 
-.mobile-menu-nav a:hover {
+.mobile-menu-nav a:hover,
+.mobile-menu-nav a:focus {
     color: #00f0ff;
+    background: rgba(0, 240, 255, 0.1);
+    transform: translateX(5px);
 }
+
+/* Add staggered animation for menu items */
+.mobile-menu-nav li:nth-child(1) { transition-delay: 0.1s; }
+.mobile-menu-nav li:nth-child(2) { transition-delay: 0.15s; }
+.mobile-menu-nav li:nth-child(3) { transition-delay: 0.2s; }
+.mobile-menu-nav li:nth-child(4) { transition-delay: 0.25s; }
 
 .mobile-menu-header {
     display: flex;
@@ -396,6 +439,44 @@ img {
 .mobile-menu-overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
+}
+
+/* Ensure proper spacing for mobile devices */
+@media (max-width: 480px) {
+    .mobile-menu {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    .mobile-menu-header {
+        padding: 10px 0;
+        margin-bottom: 15px;
+    }
+    
+    .mobile-menu-nav a {
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+    
+    .mobile-menu-cta {
+        margin-top: 20px;
+    }
+}
+
+/* Fix for iOS scrolling */
+@supports (-webkit-touch-callout: none) {
+    .mobile-menu {
+        height: -webkit-fill-available;
+    }
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 /* Responsive Sections */
