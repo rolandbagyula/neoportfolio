@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f051a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -298,6 +298,7 @@ https://templatemo.com/tm-594-nexus-flow
         const overlay = document.getElementById('mobileMenuOverlay');
         const closeButton = document.getElementById('mobileMenuClose');
         const body = document.body;
+        let isMenuOpen = false;
         
         // Check if elements exist
         if (!menuButton || !menu || !overlay || !closeButton) {
@@ -307,19 +308,22 @@ https://templatemo.com/tm-594-nexus-flow
 
         // Toggle menu function
         function toggleMenu() {
-            const isOpen = !menu.classList.contains('active');
+            isMenuOpen = !isMenuOpen;
             
             // Toggle classes
-            menu.classList.toggle('active', isOpen);
-            menuButton.classList.toggle('active', isOpen);
-            overlay.classList.toggle('active', isOpen);
+            menu.classList.toggle('active', isMenuOpen);
+            menuButton.classList.toggle('active', isMenuOpen);
+            overlay.classList.toggle('active', isMenuOpen);
             
             // Update ARIA attributes
-            menuButton.setAttribute('aria-expanded', isOpen);
+            menuButton.setAttribute('aria-expanded', isMenuOpen);
             
             // Handle body scroll
-            if (isOpen) {
+            if (isMenuOpen) {
+                document.documentElement.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
                 body.classList.add('menu-open');
+                
                 // Focus trap
                 menu.setAttribute('tabindex', '-1');
                 closeButton.focus();
@@ -330,11 +334,13 @@ https://templatemo.com/tm-594-nexus-flow
                     item.style.transitionDelay = `${0.1 + (index * 0.05)}s`;
                 });
             } else {
+                document.documentElement.style.overflow = '';
+                document.body.style.overflow = '';
                 body.classList.remove('menu-open');
                 menuButton.focus();
             }
             
-            return isOpen;
+            return isMenuOpen;
         }
         
         // Close menu function
@@ -363,13 +369,28 @@ https://templatemo.com/tm-594-nexus-flow
         });
         
         // Close when clicking outside menu
-        document.addEventListener('click', function(e) {
-            if (menu.classList.contains('active') && 
-                !menu.contains(e.target) && 
-                !menuButton.contains(e.target)) {
+        function handleOutsideClick(e) {
+            if (isMenuOpen && !menu.contains(e.target) && !menuButton.contains(e.target)) {
                 closeMenu();
             }
-        });
+        }
+        
+        // Handle window resize
+        function handleResize() {
+            if (window.innerWidth > 991 && isMenuOpen) {
+                closeMenu();
+            }
+        }
+        
+        // Add event listeners
+        document.addEventListener('click', handleOutsideClick);
+        window.addEventListener('resize', handleResize);
+        
+        // Cleanup function
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+            window.removeEventListener('resize', handleResize);
+        };
         
         // Close menu when clicking on navigation links
         document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
