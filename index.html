@@ -293,158 +293,154 @@ https://templatemo.com/tm-594-nexus-flow
 <script src="templatemo-nexus-scripts.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-                return;
-            }
+        // Mobile menu elements
+        const menuButton = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('mobileMenuOverlay');
+        const closeButton = document.getElementById('mobileMenuClose');
+        const body = document.body;
+        
+        // Check if elements exist
+        if (!menuButton || !menu || !overlay || !closeButton) {
+            console.error('Menu elements not found');
+            return;
+        }
 
-            // Toggle menu function
-            function toggleMenu() {
-                const isOpen = !menu.classList.contains('active');
-                
-                // Toggle classes
-                menu.classList.toggle('active', isOpen);
-                menuButton.classList.toggle('active', isOpen);
-                overlay.classList.toggle('active', isOpen);
-                
-                // Update ARIA attributes
-                menuButton.setAttribute('aria-expanded', isOpen);
-                
-                // Handle body scroll
-                if (isOpen) {
-                    body.classList.add('menu-open');
-                    // Focus trap
-                    menu.setAttribute('tabindex', '-1');
-                    closeButton.focus();
-                    
-                    // Add animation delay for menu items
-                    const menuItems = document.querySelectorAll('.mobile-menu-nav li');
-                    menuItems.forEach((item, index) => {
-                        item.style.transitionDelay = `${0.1 + (index * 0.05)}s`;
-                    });
-                } else {
-                    body.classList.remove('menu-open');
-                    menuButton.focus();
-                }
-                
-                return isOpen;
-            }
+        // Toggle menu function
+        function toggleMenu() {
+            const isOpen = !menu.classList.contains('active');
             
-            // Close menu function
-            function closeMenu() {
-                if (menu.classList.contains('active')) {
-                    toggleMenu();
-                    return;
-                }
-                
-                // Close when clicking close button or overlay
-                if (e.target.closest('#mobileMenuClose') || e.target === overlay) {
-                    e.preventDefault();
-                    closeMenu();
-                    return;
-                }
-                
-                // Close when clicking outside menu
-                if (menu.classList.contains('active') && 
-                    !menu.contains(e.target) && 
-                    !menuButton.contains(e.target)) {
-                    closeMenu();
-                }
-            }
-
-            // Event delegation for better performance
-            document.addEventListener('click', function(e) {
-                // Toggle when clicking menu button
-                if (e.target.closest('#mobileMenuBtn')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMenu();
-                    return;
-                }
-                
-                // Close when clicking close button or overlay
-                if (e.target.closest('#mobileMenuClose') || e.target === overlay) {
-                    e.preventDefault();
-                    closeMenu();
-                    return;
-                }
-                
-                // Close when clicking outside menu
-                if (menu.classList.contains('active') && 
-                    !menu.contains(e.target) && 
-                    !menuButton.contains(e.target)) {
-                    closeMenu();
-                }
-            });
+            // Toggle classes
+            menu.classList.toggle('active', isOpen);
+            menuButton.classList.toggle('active', isOpen);
+            overlay.classList.toggle('active', isOpen);
             
-            // Close menu when clicking on navigation links
-            document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
-                link.addEventListener('click', closeMenu);
-            });
-
-            // Handle keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                // Close on Escape key
-                if (e.key === 'Escape' && menu.classList.contains('active')) {
-                    e.preventDefault();
-                    closeMenu();
-                    return;
-                }
+            // Update ARIA attributes
+            menuButton.setAttribute('aria-expanded', isOpen);
+            
+            // Handle body scroll
+            if (isOpen) {
+                body.classList.add('menu-open');
+                // Focus trap
+                menu.setAttribute('tabindex', '-1');
+                closeButton.focus();
                 
-                // Trap focus inside menu when open
-                if (e.key === 'Tab' && menu.classList.contains('active')) {
-                    const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-                    const focusableContent = menu.querySelectorAll(focusableElements);
-                    const firstFocusableElement = focusableContent[0];
-                    const lastFocusableElement = focusableContent[focusableContent.length - 1];
-                    
-                    if (e.shiftKey) {
-                        if (document.activeElement === firstFocusableElement) {
-                            lastFocusableElement.focus();
-                            e.preventDefault();
-                        }
-                    } else {
-                        if (document.activeElement === lastFocusableElement) {
-                            firstFocusableElement.focus();
-                            e.preventDefault();
-                        }
-                    }
-                }
-            });
-
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#' || targetId === '#!') return;
-                    
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        e.preventDefault();
-                        
-                        // Close menu if open
-                        if (menu.classList.contains('active')) {
-                            closeMenu();
-                        }
-                        
-                        // Smooth scroll to target
-                        const headerOffset = 80;
-                        const elementPosition = target.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: 'smooth'
-                        });
-                        
-                        // Update URL without jumping
-                        if (history.pushState) {
-                            history.pushState(null, null, targetId);
-                        } else {
-                            location.hash = targetId;
-                        }
-                    }
+                // Add animation delay for menu items
+                const menuItems = document.querySelectorAll('.mobile-menu-nav li');
+                menuItems.forEach((item, index) => {
+                    item.style.transitionDelay = `${0.1 + (index * 0.05)}s`;
                 });
+            } else {
+                body.classList.remove('menu-open');
+                menuButton.focus();
+            }
+            
+            return isOpen;
+        }
+        
+        // Close menu function
+        function closeMenu() {
+            if (menu.classList.contains('active')) {
+                toggleMenu();
+            }
+        }
+        
+        // Event listeners
+        menuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
+        
+        closeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeMenu();
+        });
+        
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeMenu();
+            }
+        });
+        
+        // Close when clicking outside menu
+        document.addEventListener('click', function(e) {
+            if (menu.classList.contains('active') && 
+                !menu.contains(e.target) && 
+                !menuButton.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        // Close menu when clicking on navigation links
+        document.querySelectorAll('.mobile-menu-nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+        
+        // Handle keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            // Close on Escape key
+            if (e.key === 'Escape' && menu.classList.contains('active')) {
+                e.preventDefault();
+                closeMenu();
+            }
+            
+            // Trap focus when menu is open
+            if (e.key === 'Tab' && menu.classList.contains('active')) {
+                const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+                const focusableContent = menu.querySelectorAll(focusableElements);
+                const firstFocusableElement = focusableContent[0];
+                const lastFocusableElement = focusableContent[focusableContent.length - 1];
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#' || targetId === '#!') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    
+                    // Close menu if open
+                    if (menu.classList.contains('active')) {
+                        closeMenu();
+                    }
+                    
+                    // Smooth scroll to target
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL without jumping
+                    if (history.pushState) {
+                        history.pushState(null, null, targetId);
+                    } else {
+                        location.hash = targetId;
+                    }
+                }
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
